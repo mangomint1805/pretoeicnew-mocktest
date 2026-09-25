@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Bài kiểm tra TOEIC Pre</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#faf8f4; --card:#ffffff; --line:#ddd7c9; --ink:#1e232b; --dim:#666e7a;
+  --amber:#a8691a; --amber-soft:#f2e2c4; --teal:#1f8f6c; --teal-soft:#e1f4ec;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;line-height:1.55;}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px;}
+header{padding:52px 0 26px;}
+h1{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(32px,6vw,46px);line-height:1.1;margin:0 0 12px;letter-spacing:-.01em;}
+header p{margin:0;color:var(--dim);font-size:16px;max-width:52ch;}
+
+/* course path */
+.path{list-style:none;margin:18px 0 0;padding:0;position:relative;}
+.path::before{content:"";position:absolute;left:27px;top:14px;bottom:14px;width:2px;background:var(--line);}
+.stop{position:relative;display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:start;padding:10px 0;}
+.dot{position:relative;z-index:1;width:56px;height:56px;border-radius:50%;background:var(--paper);border:2px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--dim);}
+.dot small{font-size:10.5px;line-height:1;}
+.dot b{font-family:'Fraunces',Georgia,serif;font-size:20px;font-weight:600;line-height:1.1;}
+.stop.open .dot{border-color:var(--amber);background:var(--amber-soft);color:#6b4410;}
+.body{padding-top:6px;}
+.name{font-weight:600;font-size:17px;margin:0;}
+.meta{font-size:14px;color:var(--dim);margin:2px 0 0;}
+.stop.big .name{font-family:'Fraunces',Georgia,serif;font-size:21px;font-weight:600;}
+
+.go{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;text-decoration:none;color:var(--ink);
+  background:var(--card);border:1.5px solid var(--amber);border-radius:10px;padding:13px 16px;min-height:52px;}
+.go:hover{background:var(--amber-soft);}
+.go:focus-visible{outline:3px solid var(--amber);outline-offset:2px;}
+.go span{font-weight:700;color:#6b4410;}
+.go i{font-style:normal;font-size:13.5px;color:var(--dim);}
+.soon{display:inline-block;margin-top:6px;font-size:13px;color:var(--dim);border:1px dashed var(--line);border-radius:6px;padding:3px 9px;}
+
+.tips{margin:40px 0 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;}
+.tips h2{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:21px;margin:0 0 8px;}
+.tips ul{margin:0;padding-left:20px;}
+.tips li{margin:6px 0;font-size:15px;}
+footer{padding:30px 0 50px;color:var(--dim);font-size:13px;}
+
+@media (max-width:480px){
+  header{padding:36px 0 18px;}
+  .path::before{left:23px;}
+  .stop{grid-template-columns:48px 1fr;gap:12px;}
+  .dot{width:48px;height:48px;}
+  .dot b{font-size:18px;}
+}
+@media (prefers-reduced-motion:no-preference){
+  .stop.open .dot{animation:pulse 2.4s ease-out 1;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(168,105,26,.35);}100%{box-shadow:0 0 0 14px rgba(168,105,26,0);}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Bài kiểm tra TOEIC Pre</h1>
+    <p>Các bài kiểm tra theo lịch học của lớp. Bài nào đã mở thì bấm vào để làm, các bài còn lại thầy sẽ mở dần theo tiến độ.</p>
+  </header>
+
+  <ol class="path" id="path"></ol>
+
+  <section class="tips">
+    <h2>Trước khi làm bài</h2>
+    <ul>
+      <li>Làm được trên máy tính hoặc điện thoại. Bài có phần nghe thì chuẩn bị tai nghe.</li>
+      <li>Nhập đúng họ tên và lớp để thầy nhận được kết quả của bạn.</li>
+      <li>Tắt thông báo, không chuyển ứng dụng và không để màn hình tự tắt trong lúc làm.</li>
+      <li>Nộp bài xong, điểm sẽ hiện ngay trên màn hình.</li>
+    </ul>
+  </section>
+
+  <footer>TOEIC Pre · Mock test</footer>
+</div>
+
+<script>
+/* Danh sách bài theo lịch học.
+   Muốn mở một bài: điền tên file (đúng như trên GitHub) vào "file".
+   Bài chưa có file sẽ hiện "Chưa mở". */
+const TESTS = [
+  { session: 3,  name: "Mock Test 1 · Part 1", detail: "Photographs · 6 câu · 8 phút · có phần nghe", file: "PRE TOEIC MOCK TEST 1 PART 1 - EXAM.html" },
+  { session: 6,  name: "Mock Test 2 · Part 5", detail: "Incomplete Sentences · 30 câu",              file: "" },
+  { session: 9,  name: "Mock Test 3 · Part 6", detail: "Text Completion · 16 câu",                   file: "" },
+  { session: 11, name: "Progress Test 1",      detail: "Kiểm tra giữa khóa · Nghe và Đọc",           file: "", big: true },
+  { session: 13, name: "Mock Test 4 · Part 2", detail: "Question–Response · 25 câu · có phần nghe",  file: "" },
+  { session: 16, name: "Mock Test 5 · Part 3", detail: "Conversations · 39 câu · có phần nghe",      file: "" },
+  { session: 19, name: "Mock Test 6 · Part 7", detail: "Reading Comprehension · 29 câu",             file: "" },
+  { session: 24, name: "Progress Test 2",      detail: "Kiểm tra cuối khóa · Nghe và Đọc",           file: "", big: true },
+];
+
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+document.getElementById('path').innerHTML = TESTS.map(t => {
+  const open = !!t.file;
+  const cls = 'stop' + (open ? ' open' : '') + (t.big ? ' big' : '');
+  const action = open
+    ? '<a class="go" href="' + encodeURI(t.file) + '"><span>Làm bài</span><i>' + esc(t.detail) + '</i></a>'
+    : '<p class="meta">' + esc(t.detail) + '</p><span class="soon">Chưa mở</span>';
+  return '<li class="' + cls + '"><div class="dot" aria-label="Buổi ' + t.session + '"><small>Buổi</small><b>' + t.session + '</b></div>'
+       + '<div class="body"><p class="name">' + esc(t.name) + '</p>' + action + '</div></li>';
+}).join('');
+</script>
+</body>
+</html>
