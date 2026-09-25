@@ -206,7 +206,7 @@ input.t{width:100%;font:16px 'IBM Plex Sans',sans-serif;padding:10px 12px;border
 
 <script>
 const CONFIG = {
-  SCRIPT_URL: "__NEW_WEBAPP_URL__",
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxCAh01fUjerxSU1Qt4e7IYUzfYBLJ08blQu8ATWlZhfth3UW67R8lwbRljuQJ1xkndtg/exec",
   TEST_ID: "TOEIC-PRE-MOCK1-P1",
   TOTAL_MINUTES: 8,
   MAX_VIOLATIONS: 5
@@ -466,7 +466,7 @@ $('btnEarly').onclick=async()=>{
   const all=[...DATA.P1.map(q=>q.n),...DATA.P2,...DATA.P5.map(q=>q.n),...DATA.P6.flatMap(g=>g.qs.map(q=>q.n))];
   const un=all.filter(n=>!S.answers[n]).length;
   const extra = S.stage==='listening' ? ' Audio sẽ dừng và bạn sẽ không làm được phần Đọc.' : '';
-  const ok=await modal('Nộp bài sớm?', (un?'Bạn còn '+un+'/77 câu chưa trả lời, những câu này sẽ tính là sai.':'Bạn đã trả lời hết 77 câu.')+extra+' Sau khi nộp bạn không thể sửa bài.',{ok:'Nộp bài ngay',cancel:'Làm tiếp'});
+  const ok=await modal('Nộp bài sớm?', (un?'Bạn còn '+un+'/'+TOTAL_Q+' câu chưa trả lời, những câu này sẽ tính là sai.':'Bạn đã trả lời hết '+TOTAL_Q+' câu.')+extra+' Sau khi nộp bạn không thể sửa bài.',{ok:'Nộp bài ngay',cancel:'Làm tiếp'});
   if(ok) submit(false,'Học viên nộp sớm');
 };
 $('btnRetake').onclick=async()=>{
