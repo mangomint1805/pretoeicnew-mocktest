@@ -23,7 +23,7 @@ Mở đường link ở trên, chọn bài thầy đã giao rồi bấm **Làm b
 | Buổi | Bài | Nội dung | Trạng thái |
 |---|---|---|---|
 | 3 | Mock Test 1 · Part 1 | Photographs · 6 câu · 8 phút | ✅ Đã mở |
-| 6 | Mock Test 2 · Part 5 | Incomplete Sentences · 30 câu | ⏳ Chưa mở |
+| 6 | Mock Test 2 · Part 5 | Incomplete Sentences · 30 câu · 30 phút | ✅ Đã mở |
 | 9 | Mock Test 3 · Part 6 | Text Completion · 16 câu | ⏳ Chưa mở |
 | 11 | Progress Test 1 | Kiểm tra giữa khóa | ⏳ Chưa mở |
 | 13 | Mock Test 4 · Part 2 | Question–Response · 25 câu | ⏳ Chưa mở |
