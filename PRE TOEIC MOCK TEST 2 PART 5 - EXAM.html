@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>TOEIC Pre — Mock Test 2 · Part 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--ink:#faf8f4;--panel:#fff;--panel-2:#f2efe8;--hairline:#ddd7c9;--paper:#1e232b;--dim:#666e7a;
+  --amber:#a8691a;--amber-dim:#f2e2c4;--teal:#1f8f6c;--teal-dim:#e1f4ec;--coral:#c14636;--coral-dim:#fbe6e2;}
+*{box-sizing:border-box;}
+html,body{margin:0;background:var(--ink);color:var(--paper);font-family:'IBM Plex Sans',system-ui,sans-serif;line-height:1.55;}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px;}
+.hidden{display:none !important;}
+h1{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0 0 10px;}
+h2{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:22px;margin:30px 0 6px;}
+.kicker{color:var(--amber);font-size:13px;margin:0 0 8px;}
+.card{background:var(--panel);border:1px solid var(--hairline);border-radius:6px;padding:20px 22px;margin:16px 0;}
+.btn{font:600 15px 'IBM Plex Sans',sans-serif;padding:11px 20px;border-radius:4px;cursor:pointer;border:1px solid var(--amber);background:var(--amber);color:#fff;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn.ghost{background:none;color:var(--paper);border-color:var(--hairline);}
+label.f{display:block;font-weight:600;font-size:14px;margin:14px 0 5px;}
+input.t{width:100%;font:16px 'IBM Plex Sans',sans-serif;padding:10px 12px;border:1px solid var(--hairline);border-radius:4px;background:var(--panel-2);color:var(--paper);-webkit-user-select:text;user-select:text;}
+.rules{padding-left:20px;margin:8px 0;font-size:15px;}
+.rules li{margin:5px 0;}
+.agree{display:flex;gap:8px;align-items:flex-start;margin:16px 0;font-size:14.5px;}
+.err{color:var(--coral);font-size:14px;margin-top:8px;}
+/* top bar */
+.bar{position:sticky;top:0;z-index:30;background:rgba(250,248,244,.97);border-bottom:1px solid var(--hairline);}
+.bar .wrap{display:flex;align-items:center;gap:14px;padding-top:10px;padding-bottom:10px;flex-wrap:wrap;}
+.bar .who{font-weight:600;font-size:14px;}
+.bar .stage{font-size:13px;color:var(--amber);font-weight:700;}
+.bar .right{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:14px;}
+.timer{font-family:'Fraunces',Georgia,serif;font-size:20px;}
+.timer.low{color:var(--coral);}
+.vio{font-size:13px;color:var(--dim);}
+.vio.warn{color:var(--coral);font-weight:600;}
+/* audio */
+.audiobox{background:var(--panel-2);border:1px solid var(--hairline);border-radius:6px;padding:16px 18px;margin:16px 0;}
+.prog{height:8px;background:var(--hairline);border-radius:4px;overflow:hidden;margin-top:12px;}
+.prog div{height:100%;width:0;background:var(--amber);transition:width .5s linear;}
+.audiometa{font-size:13px;color:var(--dim);margin-top:6px;}
+/* questions */
+.q{background:var(--panel);border:1px solid var(--hairline);border-radius:5px;padding:14px 16px;margin:10px 0;}
+.q.answered{border-left:3px solid var(--amber);}
+.qh{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;}
+.num{font-family:'Fraunces',Georgia,serif;font-size:22px;color:var(--amber);min-width:40px;}
+.qphoto{max-width:100%;display:block;border:1px solid var(--hairline);border-radius:3px;margin-bottom:12px;pointer-events:none;}
+.stem{font-size:16px;margin-bottom:12px;}
+.blank{color:var(--amber);font-weight:700;}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opts.row{flex-direction:row;}
+.opt{border:1px solid var(--hairline);background:var(--panel-2);color:var(--paper);padding:10px 14px;text-align:left;font:15px 'IBM Plex Sans',sans-serif;border-radius:4px;cursor:pointer;}
+.opts.row .opt{flex:1;text-align:center;font-weight:700;font-size:16px;}
+.opt .lt{font-weight:700;color:var(--amber);margin-right:8px;}
+.opt.sel{background:var(--amber-dim);border-color:var(--amber);}
+.opt:disabled{cursor:default;opacity:.8;}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
+.grid2 .q{margin:0;}
+.passage{background:var(--panel-2);border:1px solid var(--hairline);border-radius:5px;padding:16px 18px;margin:18px 0 10px;white-space:pre-wrap;font-size:15px;}
+.bn{color:var(--amber);font-weight:700;font-size:12px;vertical-align:super;}
+.ptitle{font-weight:600;margin-top:26px;}
+.section-note{font-size:14.5px;color:var(--dim);background:var(--panel-2);border:1px solid var(--hairline);border-radius:5px;padding:12px 14px;}
+.submitzone{text-align:center;margin:34px 0 60px;}
+/* overlay + modal */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(30,35,43,.72);display:flex;align-items:center;justify-content:center;padding:20px;}
+.overlay .box{background:#fff;border-radius:8px;max-width:440px;width:100%;padding:24px;text-align:center;}
+.overlay .box h3{margin:0 0 8px;font-size:20px;}
+.overlay .box p{margin:0 0 18px;color:var(--dim);font-size:15px;}
+.overlay .box .row{display:flex;gap:10px;justify-content:center;}
+.overlay.danger .box h3{color:var(--coral);}
+/* watermark */
+#wm{position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden;opacity:.07;}
+#wm div{position:absolute;left:-20%;width:140%;transform:rotate(-24deg);font-weight:700;font-size:20px;white-space:nowrap;color:#000;}
+.done{text-align:center;padding:60px 0;}
+.done .big{font-size:52px;}
+
+.scorebox{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:22px 0;}
+.sc{background:#fff;border:1px solid var(--hairline);border-radius:8px;padding:14px 22px;min-width:130px;}
+.sc span{display:block;font-size:13px;color:var(--dim);font-weight:600;}
+.sc b{font-family:'Fraunces',Georgia,serif;font-size:38px;font-weight:500;color:var(--paper);}
+.sc i{font-style:normal;color:var(--dim);margin-left:4px;}
+.sc.tot{border-color:var(--amber);background:var(--amber-dim);}
+.sc.tot b{color:#6b4410;}
+.btn.early{padding:7px 14px;font-size:13.5px;}
+@media (max-width:600px){
+  .wrap{padding:0 14px;}
+  h1{font-size:26px;}
+  h2{font-size:19px;margin-top:22px;}
+  .card{padding:16px;}
+  .bar .wrap{gap:8px;padding-top:8px;padding-bottom:8px;}
+  .bar .right{margin-left:0;width:100%;justify-content:space-between;gap:10px;}
+  .bar .who{font-size:13px;}
+  .timer{font-size:18px;}
+  .q{padding:12px 13px;}
+  .num{font-size:19px;min-width:34px;}
+  .stem{font-size:15.5px;line-height:1.6;}
+  .opt{padding:13px 14px;font-size:15.5px;min-height:48px;}
+  .overlay .box{padding:20px 18px;}
+  .overlay .box .row{flex-direction:column-reverse;}
+  .overlay .box .row .btn{width:100%;}
+  .sc{min-width:120px;padding:12px 18px;}
+  .sc b{font-size:32px;}
+  #wm div{font-size:15px;}
+}
+.opt{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.star{color:var(--coral);font-weight:700;font-size:15px;margin-left:2px;}
+@media print{body{display:none !important;}}
+</style>
+</head>
+<body>
+<div id="wm"></div>
+
+<!-- START -->
+<section id="sStart" class="wrap hidden">
+  <div style="padding:40px 0 10px;">
+    <p class="kicker">TOEIC Pre · Part 5</p>
+    <h1>Mock Test 2</h1>
+  </div>
+  <div class="card">
+    <label class="f" for="inName">Họ và tên</label>
+    <input class="t" id="inName" autocomplete="off" placeholder="Ví dụ: Nguyễn Văn An">
+    <label class="f" for="inClass">Lớp / Mã học viên</label>
+    <input class="t" id="inClass" autocomplete="off" placeholder="Ví dụ: TOEIC Pre 01">
+  </div>
+  <div class="card">
+    <b>Quy định làm bài</b>
+    <ul class="rules">
+      <li>Có thể làm bài trên <b>máy tính hoặc điện thoại</b>. Nếu dùng điện thoại: <b>tắt thông báo</b>, cắm sạc nếu pin yếu và <b>không để màn hình tự tắt</b>. Khóa màn hình, nghe điện thoại hay chuyển sang ứng dụng khác đều tính là rời khỏi trang.</li>
+      <li>Bài gồm <b>30 câu Part 5</b>.</li>
+      <li>Toàn bài có <b>30 phút</b>, tính từ lúc bấm "Bắt đầu làm bài". Hết giờ, bài sẽ tự động được nộp.</li>
+      <li>Bài làm ở chế độ toàn màn hình. <b>Rời khỏi trang, chuyển tab, thoát toàn màn hình hoặc tải lại trang</b> đều bị ghi lại và gửi cho giáo viên.</li>
+      <li>Vi phạm <b>5 lần</b>, bài sẽ bị <b>tự động nộp</b>.</li>
+      <li>Bạn có thể <b>làm lại bài nhiều lần</b>. Mỗi lần nộp đều được gửi cho giáo viên. Điểm sẽ hiện ngay sau khi nộp bài.</li>
+    </ul>
+    <label class="agree"><input type="checkbox" id="chkAgree"> <span>Tôi đã đọc và đồng ý với quy định trên.</span></label>
+    <button class="btn" id="btnStart">Bắt đầu làm bài</button>
+    <div class="err" id="startErr"></div>
+  </div>
+</section>
+
+<!-- EXAM -->
+<div id="sExam" class="hidden">
+  <div class="bar"><div class="wrap">
+    <div><div class="who" id="barWho"></div><div class="stage" id="barStage"></div></div>
+    <div class="right"><span class="vio" id="barVio"></span><span class="timer" id="barTimer"></span><button class="btn early" id="btnEarly">Nộp bài</button></div>
+  </div></div>
+
+  <section id="sListen" class="wrap hidden">
+    <h2>Phần Nghe</h2>
+    <div class="audiobox">
+      <button class="btn" id="btnPlay">▶ Bắt đầu phần Nghe</button>
+      <div class="prog"><div id="progFill"></div></div>
+      <div class="audiometa" id="audioMeta">Audio chỉ phát một lần. Bấm nút khi bạn đã sẵn sàng.</div>
+    </div>
+    <audio id="au" preload="auto"></audio>
+    <div id="p1head"><h2 style="font-size:18px">Part 1 · Photographs</h2>
+    <div class="section-note">Nghe 4 câu mô tả cho mỗi bức ảnh và chọn câu mô tả đúng nhất.</div></div>
+    <div id="p1"></div>
+    <div id="p2head"><h2 style="font-size:18px">Part 2 · Question–Response</h2>
+    <div class="section-note">Nghe câu hỏi và 3 câu trả lời, chọn câu trả lời phù hợp nhất.</div></div>
+    <div class="grid2" id="p2" style="margin-top:10px"></div>
+    <div class="submitzone">
+      <button class="btn" id="btnToReading" disabled>Sang phần Đọc →</button>
+      <div class="audiometa" id="toReadNote">Nút này sẽ mở khi audio phát xong.</div>
+    </div>
+  </section>
+
+  <section id="sRead" class="wrap hidden">
+    <div id="p5head"><h2>Part 5 · Incomplete Sentences</h2>
+    <div class="section-note">Chọn từ hoặc cụm từ phù hợp nhất để hoàn thành câu.</div></div>
+    <div class="section-note" id="starNote" style="margin-top:10px"><span class="star">*</span> Câu có dấu sao dùng kiến thức các bạn <b>chưa học</b> trên lớp. Cứ cố gắng làm nhé!</div>
+    <div id="p5"></div>
+    <div id="p6head"><h2>Part 6 · Text Completion</h2>
+    <div class="section-note">Đọc đoạn văn và chọn đáp án phù hợp nhất cho mỗi chỗ trống.</div></div>
+    <div id="p6"></div>
+    <div class="submitzone">
+      <button class="btn" id="btnSubmit">Nộp bài</button>
+    </div>
+  </section>
+</div>
+
+<!-- DONE -->
+<section id="sDone" class="wrap hidden">
+  <div class="done">
+    <div class="big" id="doneIcon">✅</div>
+    <h1 id="doneTitle">Đã nộp bài</h1>
+    <p id="doneMsg" style="color:var(--dim)">Bài làm của bạn đã được gửi cho giáo viên. Kết quả sẽ được thông báo sau.</p>
+    <div class="scorebox hidden" id="scoreBox">
+      <div class="sc"><span>Số câu đúng</span><b id="scL">–</b><i id="scN"></i></div>
+      <div class="sc tot"><span>Điểm</span><b id="scR">–</b><i>/ 10</i></div>
+      <b id="scT" class="hidden"></b>
+    </div>
+    <button class="btn hidden" id="btnRetry">Gửi lại bài</button>
+    <div><button class="btn ghost hidden" id="btnRetake" style="margin-top:14px">↻ Làm lại bài</button></div>
+  </div>
+</section>
+
+<div class="overlay hidden" id="ov"><div class="box">
+  <h3 id="ovTitle"></h3><p id="ovMsg"></p>
+  <div class="row"><button class="btn ghost hidden" id="ovCancel">Quay lại</button><button class="btn" id="ovOk">OK</button></div>
+</div></div>
+
+<script>
+const CONFIG = {
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxCAh01fUjerxSU1Qt4e7IYUzfYBLJ08blQu8ATWlZhfth3UW67R8lwbRljuQJ1xkndtg/exec",
+  TEST_ID: "TOEIC-PRE-MOCK2-P5",
+  TOTAL_MINUTES: 30,
+  MAX_VIOLATIONS: 5
+};
+const STAR = [];
+const SHUFFLE = false;
+const DATA = {"P1": [], "P2": [], "P5": [{"n": 101, "stem": "You and Jane use the same accounting programs, but ___ is a newer version.", "opts": ["her", "hers", "she", "she’s"]}, {"n": 102, "stem": "For reasons of ___, anyone entering the construction area must wear a hard hat.", "opts": ["safety", "safe", "safely", "safer"]}, {"n": 103, "stem": "All of ___ are available online more cheaply than here at this store.", "opts": ["that", "they", "these", "none"]}, {"n": 104, "stem": "The company was expecting many complaints from customers about the mistake, but there were ___.", "opts": ["no", "another", "one", "none"]}, {"n": 105, "stem": "___ who are interested in joining the planning committee should talk to Jane in personnel.", "opts": ["This", "That", "Those", "These"]}, {"n": 106, "stem": "Here at LifeLine Insurance, ___ ensure that our customers pay the best rates for the most comprehensive services.", "opts": ["we", "us", "our", "ours"]}, {"n": 107, "stem": "The manager ___ called the supplier to ask why the shipment was running late.", "opts": ["her", "hers", "she", "herself"]}, {"n": 108, "stem": "As the owner, ___ is ultimately responsible for the success or failure of his company.", "opts": ["he", "she", "it", "we"]}, {"n": 109, "stem": "Maria designed the new company brochures ___.", "opts": ["quickly", "quickness", "quicken", "quickening"]}, {"n": 110, "stem": "Market research, performed before you even ask for a bank loan, is ___ part of establishing a successful business.", "opts": ["essential", "that essential", "an essential", "this essential"]}, {"n": 111, "stem": "It is our company’s wish that ___ employee perform at least 4 hours of community service per year.", "opts": ["all", "very", "most", "every"]}, {"n": 112, "stem": "The ___ information available on the mysterious offshore company frustrated investigators looking into the fraud.", "opts": ["little", "a little", "few", "many"]}, {"n": 113, "stem": "The company had the ___ support of the board when deciding to merge with their rival company.", "opts": ["completely", "complete", "completed", "completes"]}, {"n": 114, "stem": "The company scarcely had enough money to remain solvent and could not pay ___ employees.", "opts": ["them", "his", "its", "it"]}, {"n": 115, "stem": "Money is ___ from that account to our business accounts the 10th of every month.", "opts": ["remitted", "turned back", "put", "handed in"]}, {"n": 116, "stem": "The president, Naoki Mitsumi, asked that ___ be the one to announce the new product.", "opts": ["his", "him", "he", "himself"]}, {"n": 117, "stem": "She loves him because of his ___.", "opts": ["kindness", "kindly", "kind", "kinds"]}, {"n": 118, "stem": "Employees have to use the stairway because the ___ is being repaired.", "opts": ["escalate", "escalator", "escalation", "escalating"]}, {"n": 119, "stem": "Interviews at the ___ company don’t come very often.", "opts": ["nation", "nationality", "nationally", "national"]}, {"n": 120, "stem": "We didn’t ___ understand the teacher’s instructions.", "opts": ["complete", "more complete", "completely", "more completely"]}, {"n": 121, "stem": "Tom Peterson, the CEO, is an ___ person who is well-known for taking care of his employees.", "opts": ["admire", "admirable", "admiration", "admirably"]}, {"n": 122, "stem": "Prethart Tool Company has created a more ___ drill than its previous models.", "opts": ["powerful", "powers", "powerfully", "power"]}, {"n": 123, "stem": "The ___ of the new main office was inconvenient for employees who didn’t have a car.", "opts": ["locate", "to locate", "located", "location"]}, {"n": 124, "stem": "After ten years in ___, Ravensdale Fiduciary Firm is expanding its to Shanghai, Hong Kong, Tokyo, Seoul and Singapore.", "opts": ["operate", "operation", "operated", "operational"]}, {"n": 125, "stem": "After twenty-three years of ___, Jeffrey Bartlett is retiring from his position as CEO.", "opts": ["service", "serving", "server", "serves"]}, {"n": 126, "stem": "Mr. Lloyd has approved a ___ for the construction of a new research facility.", "opts": ["proposal", "proposed", "propose", "proposing"]}, {"n": 127, "stem": "The government sends teams of ___ to check the quality of the tap water in both urban and rural countries.", "opts": ["inspected", "inspectors", "inspections", "inspect"]}, {"n": 128, "stem": "Empty boxes should be placed in the stockroom for ___.", "opts": ["removable", "remover", "removed", "removal"]}, {"n": 129, "stem": "For the past two years, ___ of the new product lines has been running ahead of schedule.", "opts": ["develop", "development", "developing", "developer"]}, {"n": 130, "stem": "Many tourists have been attracted by the ___ of Ha Long Bay.", "opts": ["beauty", "beautiful", "beautify", "beautifully"]}], "P6": []};
+const AUDIO_SRC = "";
+const HAS_LISTEN = DATA.P1.length + DATA.P2.length > 0;
+const HAS_READ = DATA.P5.length + DATA.P6.length > 0;
+const TOTAL_Q = DATA.P1.length + DATA.P2.length + DATA.P5.length + DATA.P6.reduce((a,g)=>a+g.qs.length,0);
+
+const KEY = 'exam_' + CONFIG.TEST_ID;
+const $ = id => document.getElementById(id);
+let S = load();
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function nowISO(){ return new Date().toISOString(); }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const LET = ['A','B','C','D'];
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ---------- screens ---------- */
+function show(id){ ['sStart','sExam','sDone'].forEach(x=>$(x).classList.toggle('hidden', x!==id)); }
+
+/* ---------- modal ---------- */
+let ovResolve=null;
+function modal(title,msg,{ok='OK',cancel=null,danger=false}={}){
+  $('ovTitle').textContent=title; $('ovMsg').textContent=msg;
+  $('ovOk').textContent=ok; $('ovCancel').classList.toggle('hidden',!cancel);
+  if(cancel) $('ovCancel').textContent=cancel;
+  $('ov').classList.toggle('danger',danger); $('ov').classList.remove('hidden');
+  return new Promise(r=>{ ovResolve=r; });
+}
+$('ovOk').onclick=()=>{ $('ov').classList.add('hidden'); ovResolve&&ovResolve(true); };
+$('ovCancel').onclick=()=>{ $('ov').classList.add('hidden'); ovResolve&&ovResolve(false); };
+
+/* ---------- fullscreen ---------- */
+const fsSupported = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+function isFS(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+function enterFS(){ const el=document.documentElement; try{ (el.requestFullscreen||el.webkitRequestFullscreen).call(el); }catch(e){} }
+
+/* ---------- violations ---------- */
+let lastVio=0;
+function inExam(){ return S && (S.stage==='listening' || S.stage==='reading'); }
+function note(type){ if(!S) return; S.notes.push({t:nowISO(),type}); save(); }
+async function violate(type){
+  if(!inExam()) return;
+  const t=Date.now(); if(t-lastVio<2500) { note(type+' (cùng lúc)'); return; }
+  lastVio=t;
+  S.violations.push({t:nowISO(),type}); save(); updateBar();
+  if(S.violations.length>=CONFIG.MAX_VIOLATIONS){ await submit(true,'Vượt quá số lần vi phạm'); return; }
+  await modal('⚠️ Cảnh báo vi phạm', type+'. Hành động này đã được ghi lại và gửi cho giáo viên. Vi phạm '+S.violations.length+'/'+CONFIG.MAX_VIOLATIONS+' — đến '+CONFIG.MAX_VIOLATIONS+' lần bài sẽ tự động nộp.', {ok:'Tiếp tục làm bài',danger:true});
+  if(fsSupported && !isFS()) enterFS();
+}
+let unloading=false; window.addEventListener('pagehide',()=>{unloading=true;});
+document.addEventListener('visibilitychange',()=>{ if(document.hidden && !unloading) violate('Rời khỏi trang / chuyển tab / chuyển ứng dụng'); });
+function onFS(){ if(fsSupported && !isFS()) violate('Thoát chế độ toàn màn hình'); }
+document.addEventListener('fullscreenchange',onFS);
+document.addEventListener('webkitfullscreenchange',onFS);
+['copy','cut','paste','contextmenu','dragstart','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{
+  if(e.target && e.target.classList && e.target.classList.contains('t')) return;
+  e.preventDefault(); if(ev!=='selectstart' && ev!=='dragstart') note('Bị chặn: '+ev);
+}));
+document.addEventListener('keydown',e=>{
+  const k=(e.key||'').toLowerCase(), mod=e.ctrlKey||e.metaKey;
+  if(e.key==='PrintScreen'){ note('Bấm PrintScreen'); }
+  if(e.key==='F12' || (mod && e.shiftKey && ['i','j','c'].includes(k)) || (mod && ['u','s','p','c','x','v','a','f'].includes(k))){
+    if(e.target.classList && e.target.classList.contains('t') && ['c','x','v','a'].includes(k)) return;
+    e.preventDefault(); note('Phím tắt bị chặn: '+(mod?'Ctrl+':'')+(e.shiftKey?'Shift+':'')+e.key);
+  }
+});
+window.addEventListener('beforeunload',e=>{ if(inExam()){ e.preventDefault(); e.returnValue=''; } });
+
+/* ---------- watermark ---------- */
+function watermark(){
+  const txt=(S.name+' · '+S.cls+' · ').repeat(12); let h='';
+  for(let i=0;i<14;i++) h+='<div style="top:'+(i*9-10)+'%">'+esc(txt)+'</div>';
+  $('wm').innerHTML=h;
+}
+
+/* ---------- bar ---------- */
+let timerInt=null;
+function updateBar(){
+  $('barWho').textContent=S.name+' · '+S.cls;
+  $('barStage').textContent= S.stage==='listening'?'PHẦN NGHE':'PHẦN ĐỌC';
+  const v=S.violations.length; $('barVio').textContent='Vi phạm: '+v+'/'+CONFIG.MAX_VIOLATIONS; $('barVio').classList.toggle('warn',v>0);
+}
+function deadline(){ return S.deadline || (new Date(S.startedAt).getTime()+CONFIG.TOTAL_MINUTES*60000); }
+function tick(){
+  if(!inExam()) { $('barTimer').textContent=''; return; }
+  const left=Math.max(0,deadline()-Date.now()); const m=Math.floor(left/60000), s=Math.floor(left%60000/1000);
+  $('barTimer').textContent='⏱ '+m+':'+String(s).padStart(2,'0'); $('barTimer').classList.toggle('low',left<5*60000);
+  if(left<=0){ clearInterval(timerInt); submit(true,'Hết giờ'); }
+}
+
+/* ---------- question rendering ---------- */
+function choiceGroup(n, labels, texts, map, row){
+  // labels shown; map[i] = original letter stored
+  const box=document.createElement('div'); box.className='opts'+(row?' row':'');
+  labels.forEach((L,i)=>{
+    const b=document.createElement('button'); b.className='opt'; b.dataset.q=n; b.dataset.v=map[i];
+    b.innerHTML = texts ? '<span class="lt">'+L+'</span>'+esc(texts[i]) : L;
+    if(S.answers[n]===map[i]) b.classList.add('sel');
+    b.onclick=()=>{
+      if(b.disabled) return;
+      box.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); b.classList.add('sel');
+      S.answers[n]=map[i]; save(); b.closest('.q').classList.add('answered');
+    };
+    box.appendChild(b);
+  });
+  return box;
+}
+function qCard(n){ const d=document.createElement('div'); d.className='q'+(S.answers[n]?' answered':''); d.id='q'+n;
+  d.innerHTML='<div class="qh"><div class="num">'+n+(STAR.includes(n)?'<sup class="star" title="Kiến thức chưa học">*</sup>':'')+'</div></div>'; return d; }
+
+function renderListening(){
+  const p1=$('p1'); p1.innerHTML='';
+  DATA.P1.forEach(q=>{ const c=qCard(q.n); const img=document.createElement('img'); img.className='qphoto'; img.src=q.img; img.draggable=false;
+    c.appendChild(img); c.appendChild(choiceGroup(q.n,LET,null,LET,true)); p1.appendChild(c); });
+  const p2=$('p2'); p2.innerHTML='';
+  DATA.P2.forEach(n=>{ const c=qCard(n); c.appendChild(choiceGroup(n,['A','B','C'],null,['A','B','C'],true)); p2.appendChild(c); });
+}
+function renderReading(){
+  const p5=$('p5'); p5.innerHTML='';
+  S.order.p5.forEach(({n,perm})=>{
+    const q=DATA.P5.find(x=>x.n===n); const c=qCard(n);
+    const st=document.createElement('div'); st.className='stem'; st.innerHTML=esc(q.stem).replace('___','<span class="blank">_______</span>');
+    c.appendChild(st);
+    c.appendChild(choiceGroup(n,LET, perm.map(i=>q.opts[i]), perm.map(i=>LET[i]), false));
+    p5.appendChild(c);
+  });
+  const p6=$('p6'); p6.innerHTML='';
+  DATA.P6.forEach(g=>{
+    const t=document.createElement('div'); t.className='ptitle'; t.textContent=g.title; p6.appendChild(t);
+    const pa=document.createElement('div'); pa.className='passage';
+    pa.innerHTML=esc(g.passage).replace(/⟦(\d+)⟧/g,'<span class="bn">[$1]</span>_______'); p6.appendChild(pa);
+    g.qs.forEach(q=>{ const perm=S.order.p6[q.n]; const c=qCard(q.n);
+      c.appendChild(choiceGroup(q.n,LET, perm.map(i=>q.opts[i]), perm.map(i=>LET[i]), false)); p6.appendChild(c); });
+  });
+}
+
+/* ---------- audio (play once) ---------- */
+const au=$('au');
+let audioStarted=false;
+function fmt(t){ t=Math.floor(t||0); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
+au.addEventListener('timeupdate',()=>{
+  if(!audioStarted) return;
+  if(au.currentTime + 1.5 < (S.audioTime||0)) { au.currentTime=S.audioTime; return; } // block rewinding
+  S.audioTime=au.currentTime; if(Math.floor(au.currentTime)%2===0) save();
+  const d=au.duration||1; $('progFill').style.width=(100*au.currentTime/d)+'%';
+  $('audioMeta').textContent='Đang phát · '+fmt(au.currentTime)+' / '+fmt(au.duration)+' · Không thể tua hoặc tạm dừng.';
+});
+au.addEventListener('pause',()=>{ if(audioStarted && !au.ended && S.stage==='listening') au.play().catch(()=>{}); });
+au.addEventListener('ended',()=>{
+  S.audioDone=true; S.audioTime=au.duration; save();
+  $('progFill').style.width='100%'; $('audioMeta').textContent='Audio đã phát xong.';
+  $('btnToReading').disabled=false; $('toReadNote').textContent=HAS_READ?'Kiểm tra lại đáp án phần Nghe, rồi bấm để sang phần Đọc.':'Kiểm tra lại đáp án rồi bấm Nộp bài.';
+});
+$('btnPlay').onclick=()=>{
+  if(fsSupported && !isFS()) enterFS();
+  au.src=AUDIO_SRC;
+  const startAt=S.audioTime||0;
+  const go=()=>{ au.currentTime=startAt; audioStarted=true; au.play().catch(()=>{ audioStarted=false; $('btnPlay').classList.remove('hidden'); $('audioMeta').textContent='Không phát được audio, hãy bấm lại.'; }); };
+  if(au.readyState>=1) go(); else au.addEventListener('loadedmetadata',go,{once:true});
+  $('btnPlay').classList.add('hidden');
+  if(!S.audioStartedAt){ S.audioStartedAt=nowISO(); save(); }
+};
+
+/* ---------- flow ---------- */
+function enterListening(){
+  show('sExam'); $('sListen').classList.remove('hidden'); $('sRead').classList.add('hidden');
+  updateBar(); watermark(); renderListening();
+  clearInterval(timerInt); timerInt=setInterval(tick,1000); tick();
+  if(S.audioDone){ $('btnPlay').classList.add('hidden'); au.dispatchEvent(new Event('ended')); }
+  else if(S.audioTime>0){ $('btnPlay').textContent='▶ Tiếp tục phần Nghe (từ '+fmt(S.audioTime)+')'; }
+}
+function enterReading(){
+  show('sExam'); $('sListen').classList.add('hidden'); $('sRead').classList.remove('hidden');
+  updateBar(); watermark(); renderReading();
+  clearInterval(timerInt); timerInt=setInterval(tick,1000); tick();
+  window.scrollTo(0,0);
+}
+$('btnToReading').onclick=async()=>{
+  if(!HAS_READ){
+    const u=[...DATA.P1.map(q=>q.n),...DATA.P2].filter(n=>!S.answers[n]).length;
+    const ok=await modal('Nộp bài?',(u?'Bạn còn '+u+' câu chưa trả lời. ':'Bạn đã trả lời hết. ')+'Sau khi nộp bạn không thể sửa bài.',{ok:'Nộp bài',cancel:'Làm tiếp'});
+    if(ok){ S.listeningEndedAt=nowISO(); submit(false,'Học viên tự nộp'); }
+    return;
+  }
+  const un=[...DATA.P1.map(q=>q.n),...DATA.P2].filter(n=>!S.answers[n]).length;
+  const ok=await modal('Sang phần Đọc?', (un?'Bạn còn '+un+' câu Nghe chưa trả lời. ':'')+'Sau khi sang phần Đọc, bạn không thể quay lại sửa đáp án phần Nghe.',{ok:'Sang phần Đọc',cancel:'Ở lại'});
+  if(!ok) return;
+  au.pause(); audioStarted=false;
+  S.stage='reading'; S.listeningEndedAt=nowISO(); save();
+  enterReading();
+};
+$('btnSubmit').onclick=async()=>{
+  const all=[...DATA.P5.map(q=>q.n),...DATA.P6.flatMap(g=>g.qs.map(q=>q.n))];
+  const un=all.filter(n=>!S.answers[n]).length;
+  const ok=await modal('Nộp bài?', (un?'Bạn còn '+un+' câu Đọc chưa trả lời. ':'Bạn đã trả lời hết. ')+'Sau khi nộp bạn không thể sửa bài.',{ok:'Nộp bài',cancel:'Làm tiếp'});
+  if(ok) submit(false,'Học viên tự nộp');
+};
+
+async function submit(auto,reason){
+  if(S.stage==='done') return;
+  clearInterval(timerInt); au.pause(); audioStarted=false;
+  S.stage='done'; S.submittedAt=nowISO();
+  S.payload={
+    testId:CONFIG.TEST_ID, sid:S.sid||(S.sid=Date.now().toString(36)), name:S.name, cls:S.cls, answers:S.answers,
+    violations:S.violations, notes:S.notes.slice(-60), reloads:S.reloads||0,
+    startedAt:S.startedAt, listeningEndedAt:S.listeningEndedAt||'', submittedAt:S.submittedAt,
+    autoSubmitted:auto, reason:reason, userAgent:navigator.userAgent, fullscreenSupported:fsSupported
+  };
+  S.sent=false; save();
+  try{ if(document.exitFullscreen && isFS()) document.exitFullscreen(); }catch(e){}
+  $('wm').innerHTML='';
+  if(auto){ await modal(reason==='Hết giờ'?'⏰ Hết giờ':'⛔ Bài đã bị nộp tự động', reason==='Hết giờ'?'Đã hết thời gian làm bài. Bài của bạn sẽ được nộp ngay.':'Bạn đã vi phạm quá số lần cho phép. Bài của bạn đã được nộp.', {danger:true}); }
+  send();
+}
+async function send(){
+  show('sDone'); $('doneIcon').textContent='⏳'; $('doneTitle').textContent='Đang gửi bài...'; $('doneMsg').textContent='Vui lòng không đóng trang.'; $('btnRetry').classList.add('hidden');
+  if(!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.indexOf('http')!==0){ fail('Chưa cấu hình địa chỉ nhận bài. Hãy báo giáo viên.'); return; }
+  try{
+    await fetch(CONFIG.SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(S.payload)});
+    S.sent=true; S.sentAt=nowISO(); save();
+    $('doneIcon').textContent='✅'; $('doneTitle').textContent='Đã nộp bài';
+    $('doneMsg').textContent='Bài làm đã được gửi cho giáo viên. Đang lấy điểm của bạn...';
+    getScore(0);
+    $('btnRetake').classList.remove('hidden');
+  }catch(e){ fail('Không gửi được bài (mạng có vấn đề). Bài làm vẫn được lưu trên máy này — hãy kiểm tra kết nối Internet rồi bấm "Gửi lại bài".'); }
+}
+function showScore(r){
+  S.score=r; save();
+  $('scL').textContent=r.total; $('scR').textContent=Math.round(r.total/TOTAL_Q*100)/10;
+  $('scoreBox').classList.remove('hidden');
+  $('doneMsg').textContent='Bài làm đã được gửi cho giáo viên. Đây là điểm của bạn. Bạn có thể đóng trang này.';
+}
+function getScore(attempt){
+  if(S.score){ showScore(S.score); return; }
+  const cb='__score'+Date.now();
+  const s=document.createElement('script');
+  let done=false;
+  const retry=()=>{ if(done) return; done=true; s.remove(); delete window[cb];
+    if(attempt<5) setTimeout(()=>getScore(attempt+1),2000);
+    else $('doneMsg').textContent='Bài làm đã được gửi cho giáo viên. Chưa lấy được điểm, thầy sẽ thông báo điểm sau.'; };
+  window[cb]=r=>{ if(done) return; done=true; s.remove(); delete window[cb];
+    if(r && r.ok) showScore(r); else { done=false; retry(); } };
+  s.onerror=retry; setTimeout(retry,10000);
+  s.src=CONFIG.SCRIPT_URL+'?action=score&id='+encodeURIComponent(S.payload.sid)+'&callback='+cb;
+  document.body.appendChild(s);
+}
+function fail(msg){ $('doneIcon').textContent='⚠️'; $('doneTitle').textContent='Chưa gửi được bài'; $('doneMsg').textContent=msg; $('btnRetry').classList.remove('hidden'); }
+$('btnRetry').onclick=send;
+$('btnEarly').onclick=async()=>{
+  if(!inExam()) return;
+  const all=[...DATA.P1.map(q=>q.n),...DATA.P2,...DATA.P5.map(q=>q.n),...DATA.P6.flatMap(g=>g.qs.map(q=>q.n))];
+  const un=all.filter(n=>!S.answers[n]).length;
+  const extra = S.stage==='listening' ? ' Audio sẽ dừng và bạn sẽ không làm được phần Đọc.' : '';
+  const ok=await modal('Nộp bài sớm?', (un?'Bạn còn '+un+'/'+TOTAL_Q+' câu chưa trả lời, những câu này sẽ tính là sai.':'Bạn đã trả lời hết '+TOTAL_Q+' câu.')+extra+' Sau khi nộp bạn không thể sửa bài.',{ok:'Nộp bài ngay',cancel:'Làm tiếp'});
+  if(ok) submit(false,'Học viên nộp sớm');
+};
+$('btnRetake').onclick=async()=>{
+  const ok=await modal('Làm lại bài?','Bạn sẽ làm lại toàn bộ bài từ đầu, audio phát lại từ đầu. Lần nộp mới cũng sẽ được gửi cho giáo viên.',{ok:'Làm lại',cancel:'Huỷ'});
+  if(!ok) return;
+  const name=S.name, cls=S.cls;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  S=null; au.removeAttribute('src'); audioStarted=false;
+  $('scoreBox').classList.add('hidden'); $('btnRetake').classList.add('hidden');
+  $('btnPlay').classList.remove('hidden'); $('btnPlay').textContent='▶ Bắt đầu phần Nghe';
+  $('progFill').style.width='0'; $('audioMeta').textContent='Audio chỉ phát một lần. Bấm nút khi bạn đã sẵn sàng.';
+  $('btnToReading').disabled=true; $('toReadNote').textContent='Nút này sẽ mở khi audio phát xong.';
+  $('inName').value=name; $('inClass').value=cls; $('chkAgree').checked=false; $('startErr').textContent='';
+  show('sStart'); window.scrollTo(0,0);
+};
+
+$('btnStart').onclick=()=>{
+  const name=$('inName').value.trim().replace(/\s+/g,' '), cls=$('inClass').value.trim().replace(/\s+/g,' ');
+  if(name.length<2){ $('startErr').textContent='Vui lòng nhập họ và tên.'; return; }
+  if(!cls){ $('startErr').textContent='Vui lòng nhập lớp / mã học viên.'; return; }
+  if(!$('chkAgree').checked){ $('startErr').textContent='Vui lòng đánh dấu đồng ý với quy định.'; return; }
+  const p5=(SHUFFLE?shuffle(DATA.P5):DATA.P5).map(q=>({n:q.n,perm:SHUFFLE?shuffle([0,1,2,3]):[0,1,2,3]}));
+  const p6={}; DATA.P6.forEach(g=>g.qs.forEach(q=>p6[q.n]=SHUFFLE?shuffle([0,1,2,3]):[0,1,2,3]));
+  S={stage:HAS_LISTEN?'listening':'reading',listeningEndedAt:HAS_LISTEN?'':nowISO(),name,cls,answers:{},violations:[],notes:[],reloads:0,startedAt:nowISO(),deadline:Date.now()+CONFIG.TOTAL_MINUTES*60000,audioTime:0,sid:Date.now().toString(36)+Math.random().toString(36).slice(2,10),order:{p5,p6}};
+  if(!fsSupported) S.notes.push({t:nowISO(),type:'Thiết bị không hỗ trợ toàn màn hình'});
+  save(); enterFS(); if(HAS_LISTEN) enterListening(); else enterReading();
+};
+
+/* ---------- page setup ---------- */
+(function(){
+  if(!DATA.P1.length) $('p1head').classList.add('hidden');
+  if(!DATA.P2.length){ $('p2head').classList.add('hidden'); $('p2').classList.add('hidden'); }
+  if(!DATA.P5.length) $('p5head').classList.add('hidden');
+  if(!DATA.P6.length) $('p6head').classList.add('hidden');
+  if(!STAR.length) $('starNote').classList.add('hidden');
+  if(!HAS_READ){ $('btnToReading').textContent='Nộp bài'; $('toReadNote').textContent='Nút này sẽ mở khi audio phát xong.'; }
+  $('scN').textContent='/ '+TOTAL_Q;
+  $('barVio').textContent='Vi phạm: 0/'+CONFIG.MAX_VIOLATIONS;
+})();
+
+/* ---------- boot ---------- */
+(function boot(){
+  if(!S){ show('sStart'); return; }
+  if(S.stage==='done'){
+    if(S.sent){ show('sDone'); $('doneTitle').textContent='Bạn đã nộp bài'; $('doneMsg').textContent='Bài làm đã được gửi cho giáo viên lúc '+new Date(S.sentAt||S.submittedAt).toLocaleString('vi-VN')+'.'; $('btnRetake').classList.remove('hidden'); if(S.score) showScore(S.score); else getScore(3); }
+    else send();
+    return;
+  }
+  // page was reloaded mid-exam
+  S.reloads=(S.reloads||0)+1; save();
+  if(S.stage==='listening') enterListening(); else enterReading();
+  setTimeout(()=>violate('Tải lại trang'),300);
+})();
+</script>
+</body>
+</html>
