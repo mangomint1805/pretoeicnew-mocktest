@@ -161,6 +161,7 @@ input.t{width:100%;font:16px 'IBM Plex Sans',sans-serif;padding:10px 12px;border
     <h2>Phần Nghe · Câu 1–6</h2>
     <div class="audiobox">
       <button class="btn" id="btnPlay">▶ Bắt đầu phần Nghe</button>
+      <button class="btn hidden" id="btnResume">▶ Phát tiếp từ chỗ dừng</button>
       <div class="prog"><div id="progFill"></div></div>
       <div class="audiometa" id="audioMeta">Audio chỉ phát một lần. Bấm nút khi bạn đã sẵn sàng.</div>
     </div>
@@ -368,7 +369,43 @@ au.addEventListener('timeupdate',()=>{
   const d=au.duration||1; $('progFill').style.width=(100*au.currentTime/d)+'%';
   $('audioMeta').textContent='Đang phát · '+fmt(au.currentTime)+' / '+fmt(au.duration)+' · Không thể tua hoặc tạm dừng.';
 });
-au.addEventListener('pause',()=>{ if(audioStarted && !au.ended && S.stage==='listening') au.play().catch(()=>{}); });
+au.addEventListener('pause',()=>{ if(audioStarted && !au.ended && S.stage==='listening') au.play().catch(()=>audioTrouble()); });
+/* ---------- audio recovery: phát tiếp khi audio bị dừng, mở phần Đọc nếu audio không phát xong ---------- */
+const AUDIO_STOP_LIMIT=120; // audio dừng quá 2 phút thì cho sang phần Đọc
+let lastT=-1, stuckSec=0, troubleNoted=false;
+function audioTrouble(msg){
+  if(!S || !audioStarted || au.ended || S.audioDone || S.stage!=='listening') return;
+  $('btnResume').classList.remove('hidden');
+  $('audioMeta').textContent=msg||'Audio bị dừng. Bấm "Phát tiếp từ chỗ dừng" để nghe tiếp. Nếu audio dừng quá 2 phút, bạn sẽ được '+(HAS_READ?'sang phần Đọc.':'nộp bài.');
+  if(!troubleNoted){ troubleNoted=true; S.notes.push({t:nowISO(),type:'Audio bị dừng/lỗi tại '+fmt(S.audioTime)}); save(); }
+}
+au.addEventListener('error',()=>audioTrouble('Audio bị lỗi khi tải. Bấm "Phát tiếp từ chỗ dừng".'));
+au.addEventListener('stalled',()=>{ if(au.paused) audioTrouble(); });
+au.addEventListener('playing',()=>{ $('btnResume').classList.add('hidden'); stuckSec=0; troubleNoted=false; });
+$('btnResume').onclick=()=>{
+  if(fsSupported && !isFS()) enterFS();
+  const at=S.audioTime||0;
+  const go=()=>{ au.currentTime=at; audioStarted=true; au.play().then(()=>$('btnResume').classList.add('hidden')).catch(()=>audioTrouble('Không phát được audio, hãy bấm lại.')); };
+  $('audioMeta').textContent='Đang tải lại audio…';
+  if(au.error || au.readyState<1){ au.src=AUDIO_SRC.startsWith('data:')?AUDIO_SRC:AUDIO_SRC+'?r='+Date.now(); au.addEventListener('loadedmetadata',go,{once:true}); au.load(); }
+  else go();
+};
+setInterval(()=>{
+  if(!S || S.stage!=='listening' || S.audioDone || !S.audioStartedAt) return;
+  if(audioStarted && !au.ended){
+    if(Math.abs(au.currentTime-lastT)<0.1){ stuckSec+=2; if(stuckSec>=10) audioTrouble(); } else stuckSec=0;
+    lastT=au.currentTime;
+  }
+  // audio có đang phát thật không (đã bấm phát, không tạm dừng, thời gian vẫn chạy)
+  const playingNow = audioStarted && !au.paused && !au.ended && stuckSec<10;
+  if(!playingNow){ if(!S.audioStopSince){ S.audioStopSince=Date.now(); save(); } }
+  else if(S.audioStopSince){ S.audioStopSince=0; save(); }
+  if(S.audioStopSince && Date.now()-S.audioStopSince>AUDIO_STOP_LIMIT*1000 && $('btnToReading').disabled){
+    $('btnToReading').disabled=false;
+    $('toReadNote').textContent=HAS_READ?'Audio bị dừng quá 2 phút nên phần Nghe đã kết thúc. Kiểm tra lại đáp án rồi bấm để sang phần Đọc.':'Audio bị dừng quá 2 phút. Kiểm tra lại đáp án rồi bấm Nộp bài.';
+    S.notes.push({t:nowISO(),type:(HAS_READ?'Mở phần Đọc':'Mở nút Nộp bài')+' do audio dừng quá 2 phút (tại '+fmt(S.audioTime)+')'}); save();
+  }
+},2000);
 au.addEventListener('ended',()=>{
   S.audioDone=true; S.audioTime=au.duration; save();
   $('progFill').style.width='100%'; $('audioMeta').textContent='Audio đã phát xong.';
