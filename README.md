@@ -26,9 +26,9 @@ Mở đường link ở trên, chọn bài thầy đã giao rồi bấm **Làm b
 | 6 | Mock Test 2 · Part 5 | Incomplete Sentences · 30 câu · 30 phút | ✅ Đã mở |
 | 9 | Mock Test 3 · Part 6 | Text Completion · 16 câu · 16 phút | ✅ Đã mở |
 | 11 | Progress Test 1 | Kiểm tra giữa khóa | ⏳ Chưa mở |
-| 13 | Mock Test 4 · Part 2 | Question–Response · 25 câu | ⏳ Chưa mở |
-| 16 | Mock Test 5 · Part 3 | Conversations · 39 câu | ⏳ Chưa mở |
-| 19 | Mock Test 6 · Part 7 | Reading Comprehension · 29 câu | ⏳ Chưa mở |
+| 13 | Mock Test 4 · Part 2 | Question–Response · 25 câu | ✅ Đã mở |
+| 16 | Mock Test 5 · Part 3 | Conversations · 39 câu | ✅ Đã mở |
+| 19 | Mock Test 6 · Part 7 | Reading Comprehension · 29 câu | ✅ Đã mở |
 | 24 | Progress Test 2 | Kiểm tra cuối khóa | ⏳ Chưa mở |
 
 ---
