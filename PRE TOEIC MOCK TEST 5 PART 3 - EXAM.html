@@ -532,12 +532,19 @@ async function submit(auto,reason){
   if(auto){ await modal(reason==='Hết giờ'?'⏰ Hết giờ':'⛔ Bài đã bị nộp tự động', reason==='Hết giờ'?'Đã hết thời gian làm bài. Bài của bạn sẽ được nộp ngay.':'Bạn đã vi phạm quá số lần cho phép. Bài của bạn đã được nộp.', {danger:true}); }
   send();
 }
+// lưu bài làm trên máy (mt.exam.<mã đề>, 3 lần gần nhất) để trang chữa đề trên web tóm tắt hiện lại đáp án bạn đã chọn; đăng nhập Google trên web Minto English thì tự đồng bộ
+function saveMine(sc){ try{ const k='mt.exam.'+CONFIG.TEST_ID; let L=[]; try{ L=JSON.parse(localStorage.getItem(k)||'[]'); }catch(e){} if(!Array.isArray(L)) L=[];
+  let acct=''; try{ const u=JSON.parse(localStorage.getItem('mt.acc')||'null'); acct=(u&&u.email)||''; }catch(e){}
+  const o={id:CONFIG.TEST_ID,sid:S.sid,at:Date.parse(S.submittedAt)||Date.now(),a:S.answers,src:location.pathname,name:S.name,cls:S.cls,acct:acct,of:(typeof TOTAL_Q!=='undefined'?TOTAL_Q:0)};
+  if(sc&&sc.total!=null) o.sc=sc.total; const i=L.findIndex(x=>x&&x.sid===S.sid); if(i>=0) L[i]=Object.assign(L[i],o); else L.push(o);
+  localStorage.setItem(k,JSON.stringify(L.slice(-3))); }catch(e){} }
 async function send(){
   show('sDone'); $('doneIcon').textContent='⏳'; $('doneTitle').textContent='Đang gửi bài...'; $('doneMsg').textContent='Vui lòng không đóng trang.'; $('btnRetry').classList.add('hidden');
   if(!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.indexOf('http')!==0){ fail('Chưa cấu hình địa chỉ nhận bài. Hãy báo giáo viên.'); return; }
   try{
     await fetch(CONFIG.SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(S.payload)});
     S.sent=true; S.sentAt=nowISO(); save();
+    saveMine();
     $('doneIcon').textContent='✅'; $('doneTitle').textContent='Đã nộp bài';
     $('doneMsg').textContent='Bài làm đã được gửi cho giáo viên. Đang lấy điểm của bạn...';
     getScore(0);
@@ -546,6 +553,7 @@ async function send(){
 }
 function showScore(r){
   S.score=r; save();
+  saveMine(r);
   $('scL').textContent=r.total; $('scR').textContent=Math.round(r.total/TOTAL_Q*100)/10;
   $('scoreBox').classList.remove('hidden');
   $('doneMsg').textContent='Bài làm đã được gửi cho giáo viên. Đây là điểm của bạn. Bạn có thể đóng trang này.';
